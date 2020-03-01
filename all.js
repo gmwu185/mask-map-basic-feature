@@ -3,7 +3,7 @@
 /* 口罩與藥局 JSON 資料
 -------------------------------------------------- */
 
-var data2 = data.features
+// var data2 = data.features
 
 /* End of 口罩與藥局 JSON 資料
 -------------------------------------------------- */
@@ -60,6 +60,7 @@ var _thisDay__Date = addZeroStr(_date.getDate());
 
 /* End of 月份與日期單位數前面加 '0' 後存於變數中
 -------------------------------------------------- */
+
 
 function addZeroStr(num) {
   var zero = '0'; // 判斷月份是如大於雙數，單位數前面要加 '0'
@@ -132,7 +133,6 @@ function judgeDayChinese (day) {
 }
 
 function judgeOndEvenDay() {
-  
     /* 判斷週期數單、雙、週日
   -------------------------------------------------- */
 
@@ -154,7 +154,6 @@ function judgeOndEvenDay() {
 }
 
 function renderDay () {
-  
   /* 輸出畫面
   -------------------------------------------------- */
   document.querySelector('.js-week span').innerHTML = _chineseDay;
@@ -162,12 +161,40 @@ function renderDay () {
   judgeOndEvenDay();
   /* End of 輸出畫面
   -------------------------------------------------- */
+}
 
+var jsonDate;
+function getData() {
+  var xhr = new XMLHttpRequest();
+  // xhr.open('get', 'points.json'); //本地端存的資料
+  xhr.open('get', "https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json");
+  xhr.send();
+  xhr.onload = function (){
+    jsonDate = JSON.parse(xhr.responseText);
+    renderList();
+  }
+}
+
+function renderList() {
+  var dataArr = jsonDate.features;
+  console.log('dataArr', dataArr);
+  var dataStr = '';
+  for (var i=0; i<dataArr.length; i++){
+    // ES 5 組字串
+    // dataStr += '<li>' + dataArr[i].properties.name + '：' + '成人口罩' + dataArr[i].properties.mask_adult + '個' + '，' + '小孩口罩' + dataArr[i].properties.mask_child + '個' + '</li>';
+    
+    // ES 6 組字串
+    dataStr += `
+      <li>${dataArr[i].properties.name}：成人口罩 ${dataArr[i].properties.mask_adult} 個，小孩口罩 ${dataArr[i].properties.mask_child} 個</li>
+    `;
+  };
+  document.querySelector('.js-list').innerHTML = dataStr;
 }
 
 // 初始化執行
 function init() {
   // 執行函式
   renderDay();
+  getData();
 }
 init();
