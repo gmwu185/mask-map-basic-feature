@@ -1,10 +1,17 @@
 
 
-/*----------  口罩與藥局 JSON 資料  ----------*/
-// console.log(data);
-var data2 = data.features
-console.log(data2);
+/* 口罩與藥局 JSON 資料
+-------------------------------------------------- */
 
+var data2 = data.features
+
+/* End of 口罩與藥局 JSON 資料
+-------------------------------------------------- */
+
+
+
+/* 判斷日期
+-------------------------------------------------- */
 
 /*----------  時間日期資料  ----------*/
 // var _date = '星期三';
@@ -21,40 +28,47 @@ console.log(data2);
 // console.log('_day', _day);
 // 取得今天是星期幾 0 -> 週日
 
-function renderDay () {
-  var _date = new Date();
-  var _day = _date.getDay();
-  var _chineseDay = judgeDayChinese (_day);
-  var _thisDay__Year = _date.getFullYear();
-  var _thisDay__Month = addZeroStr(_date.getMonth()+1); // 一月由 0 開始要加 1
-  var _thisDay__Date = addZeroStr(_date.getDate());
+var _date = new Date();
+var _day = _date.getDay();
+var _chineseDay = judgeDayChinese (_day);
 
-  /* 月份與日期單位數前面加 '0'
-  -------------------------------------------------- */
-  function addZeroStr(num) {
-    var zero = '0'; // 判斷月份是如大於雙數，單位數前面要加 '0'
-    // if ( num < 10 ) {
-    //   return zero + num; 
-    // } else {
-    //   return String(num);
-    // };
-    return num < 10 ? zero + num : String(num)
-  }
-  /* End of 月份與日期單位數前面加 '0'
-  -------------------------------------------------- */
+/* End of 判斷日期
+-------------------------------------------------- */
 
-  // 單數 odd、雙數 even 
-  // if ( _dateMonthNum ==  2 ) {
-  //   console.log('');
-  // }
 
-  
-  /* 輸出畫面
-  -------------------------------------------------- */
-  document.querySelector('.js-week span').innerHTML = _chineseDay;
-  document.querySelector('.js-day').innerHTML = _thisDay__Year + '-' + _thisDay__Month + '-' + _thisDay__Date;
-  /* End of 輸出畫面
-  -------------------------------------------------- */
+/* 判斷週期數單、雙、週日元素初始化
+-------------------------------------------------- */
+
+var oddEL = document.querySelector('.odd');
+var evenEL = document.querySelector('.even');
+var sundayEL = document.querySelector('.sunday');
+
+oddEL.style.display = 'none';
+evenEL.style.display = 'none';
+sundayEL.style.display = 'none';
+
+/* End of 判斷週期數單、雙、週日元素初始化
+-------------------------------------------------- */
+
+
+/* 月份與日期單位數前面加 '0' 後存於變數中
+-------------------------------------------------- */
+
+var _thisDay__Year = _date.getFullYear();
+var _thisDay__Month = addZeroStr(_date.getMonth()+1); // 一月由 0 開始要加 1
+var _thisDay__Date = addZeroStr(_date.getDate());
+
+/* End of 月份與日期單位數前面加 '0' 後存於變數中
+-------------------------------------------------- */
+
+function addZeroStr(num) {
+  var zero = '0'; // 判斷月份是如大於雙數，單位數前面要加 '0'
+  // if ( num < 10 ) {
+  //   return zero + num; 
+  // } else {
+  //   return String(num);
+  // };
+  return num < 10 ? zero + num : String(num)
 }
 
 function judgeDayChinese (day) {
@@ -117,10 +131,43 @@ function judgeDayChinese (day) {
   -------------------------------------------------- */
 }
 
+function judgeOndEvenDay() {
+  
+    /* 判斷週期數單、雙、週日
+  -------------------------------------------------- */
+
+  // if ( _day == 1 || _day == 3 || _day == 5 ) {
+  //   oddEL.style.display = 'block';
+  // } 
+  // if ( _day == 2 || _day == 4 || _day == 6 ) {
+  //   evenEL.style.display = 'block';
+  // } 
+  // if ( _day == 0 ) {
+  //   sundayEL.style.display = 'block';
+  // }
+
+  _day == 1 || _day == 3 || _day == 5 ? oddEL.style.display = 'block' : 
+  _day == 2 || _day == 4 || _day == 6 ? evenEL.style.display = 'block' : sundayEL.style.display = 'block'
+  
+  /* End of 判斷週期數單、雙、週日
+  -------------------------------------------------- */
+}
+
+function renderDay () {
+  
+  /* 輸出畫面
+  -------------------------------------------------- */
+  document.querySelector('.js-week span').innerHTML = _chineseDay;
+  document.querySelector('.js-day').innerHTML = _thisDay__Year + '-' + _thisDay__Month + '-' + _thisDay__Date;
+  judgeOndEvenDay();
+  /* End of 輸出畫面
+  -------------------------------------------------- */
+
+}
+
 // 初始化執行
 function init() {
   // 執行函式
   renderDay();
 }
-
 init();
