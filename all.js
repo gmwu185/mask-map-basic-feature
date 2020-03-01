@@ -43,40 +43,56 @@ function judgeDayChinese (day) {
   /* End of if 寫法
   -------------------------------------------------- */
 
+    /* 條件 (三元) 運算子
+  -------------------------------------------------- */
+  
+  return  day == 0 ? '日' : 
+          day == 1 ? '一' : 
+          day == 2 ? '二' : 
+          day == 3 ? '三' : 
+          day == 4 ? '四' : 
+          day == 5 ? '五' : 
+          day == 6 ? '六' : 
+          '資料不正確'
+  
+  /* End of 條件 (三元) 運算子
+  -------------------------------------------------- */
+
   /* switch 寫法
   -------------------------------------------------- */
-  switch(day){
-    case 0:
-      return '日'
-      break;
-    case 1:
-      return '一'
-      break;
-    case 2:
-      return '二'
-      break;
-    case 3:
-      return '三'
-      break;
-    case 4:
-      return '四'
-      break;
-    case 5:
-      return '五'
-      break;
-    case 6:
-      return '六'
-      break;
-    default:
-      console.log('沒有任何資料');
-      break;
-  }
+  // switch(day){
+  //   case 0:
+  //     return '日'
+  //     break;
+  //   case 1:
+  //     return '一'
+  //     break;
+  //   case 2:
+  //     return '二'
+  //     break;
+  //   case 3:
+  //     return '三'
+  //     break;
+  //   case 4:
+  //     return '四'
+  //     break;
+  //   case 5:
+  //     return '五'
+  //     break;
+  //   case 6:
+  //     return '六'
+  //     break;
+  //   default:
+  //     console.log('沒有任何資料');
+  //     break;
+  // }
   /* End of switch 寫法
   -------------------------------------------------- */
 }
 
-// 執行函式
-renderDay();
+function init() {
+  // 執行函式
+  renderDay();
+}
 
-
-
+init();
