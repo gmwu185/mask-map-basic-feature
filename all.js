@@ -172,24 +172,37 @@ function getData() {
   xhr.onload = function (){
     jsonDate = JSON.parse(xhr.responseText);
     renderList();
+    // 建立市區選單
+    renderAreaSelect();
   }
 }
 
-function renderList() {
+function renderList (CounttyName) {
   var dataArr = jsonDate.features;
   console.log('dataArr', dataArr);
   var dataStr = '';
   for (var i=0; i<dataArr.length; i++){
-    // ES 5 組字串
-    // dataStr += '<li>' + dataArr[i].properties.name + '：' + '成人口罩' + dataArr[i].properties.mask_adult + '個' + '，' + '小孩口罩' + dataArr[i].properties.mask_child + '個' + '</li>';
-    
-    // ES 6 組字串
-    dataStr += `
-      <li>${dataArr[i].properties.name}：成人口罩 ${dataArr[i].properties.mask_adult} 個，小孩口罩 ${dataArr[i].properties.mask_child} 個</li>
-    `;
+    if( CounttyName == dataArr[i].properties.county){      
+      // ES 5 組字串
+      // dataStr += '<li>' + dataArr[i].properties.name + '：' + '成人口罩' + dataArr[i].properties.mask_adult + '個' + '，' + '小孩口罩' + dataArr[i].properties.mask_child + '個' + '</li>';
+      
+      // ES 6 組字串
+      dataStr += `
+        <li>${dataArr[i].properties.county}
+          <ul>
+            <li>${dataArr[i].properties.name}</li>
+            <li>地址：${dataArr[i].properties.address}</li>
+            <li>成人口罩 ${dataArr[i].properties.mask_adult} 個</li>
+            <li>小孩口罩 ${dataArr[i].properties.mask_child} 個</li>
+          </ul>
+        </li>
+      `;
+    }
   };
+  
   document.querySelector('.js-list').innerHTML = dataStr;
 }
+
 
 // 初始化執行
 function init() {
@@ -198,3 +211,21 @@ function init() {
   getData();
 }
 init();
+
+var areaEL = document.querySelector('.js-area');
+areaEL.addEventListener('change', function (e) {
+  // console.log('e.target.value', e.target.value);
+  renderList(e.target.value);
+})
+
+function renderAreaSelect() {
+  var newCountyArr = [];
+  for (var item of jsonDate.features){
+    if(newCountyArr.indexOf(item.properties.county) == -1) {
+      newCountyArr.push(item.properties.county);
+      var newOption = document.createElement("option");
+      newOption.textContent = item.properties.county;
+      areaEL.appendChild(newOption);
+    }
+  }
+}
