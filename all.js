@@ -24,10 +24,31 @@ console.log(data2);
 function renderDay () {
   var _date = new Date();
   var _day = _date.getDay();
-  var _chineseDay = judgeDayChinese (_day)
+  var _chineseDay = judgeDayChinese (_day);
+  var _thisDay__Year = addZeroStr(_date.getFullYear()) ;
+  var _thisDay__Month = addZeroStr(_date.getMonth()+1); // 一月由 0 開始要加 1
+  var _thisDay__Date = _date.getDate();
+
+  /* 月份與日期單位數前面加 '0'
+  -------------------------------------------------- */
+  function addZeroStr(num) {
+    var zero = '0'; // 判斷月份是如大於雙數，單位數前面要加 '0'
+    // if ( num < 10 ) {
+    //   return zero + num; 
+    // } else {
+    //   return String(num);
+    // };
+    return num < 10 ? zero + num : String(num)
+  }
+  /* End of 月份與日期單位數前面加 '0'
+  -------------------------------------------------- */
   
-  /*----------  輸出畫面  ----------*/
+  /* 輸出畫面
+  -------------------------------------------------- */
   document.querySelector('.js-week span').innerHTML = _chineseDay;
+  document.querySelector('.js-day').innerHTML = _thisDay__Year + '-' + _thisDay__Month + '-' + _thisDay__Date;
+  /* End of 輸出畫面
+  -------------------------------------------------- */
 }
 
 function judgeDayChinese (day) {
@@ -43,7 +64,7 @@ function judgeDayChinese (day) {
   /* End of if 寫法
   -------------------------------------------------- */
 
-    /* 條件 (三元) 運算子
+  /* 條件 (三元) 運算子
   -------------------------------------------------- */
   
   return  day == 0 ? '日' : 
@@ -90,6 +111,7 @@ function judgeDayChinese (day) {
   -------------------------------------------------- */
 }
 
+// 初始化執行
 function init() {
   // 執行函式
   renderDay();
