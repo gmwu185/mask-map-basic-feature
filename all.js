@@ -25,9 +25,9 @@ function renderDay () {
   var _date = new Date();
   var _day = _date.getDay();
   var _chineseDay = judgeDayChinese (_day);
-  var _thisDay__Year = addZeroStr(_date.getFullYear()) ;
+  var _thisDay__Year = _date.getFullYear();
   var _thisDay__Month = addZeroStr(_date.getMonth()+1); // 一月由 0 開始要加 1
-  var _thisDay__Date = _date.getDate();
+  var _thisDay__Date = addZeroStr(_date.getDate());
 
   /* 月份與日期單位數前面加 '0'
   -------------------------------------------------- */
@@ -42,6 +42,12 @@ function renderDay () {
   }
   /* End of 月份與日期單位數前面加 '0'
   -------------------------------------------------- */
+
+  // 單數 odd、雙數 even 
+  // if ( _dateMonthNum ==  2 ) {
+  //   console.log('');
+  // }
+
   
   /* 輸出畫面
   -------------------------------------------------- */
