@@ -169,7 +169,7 @@ function renderList(CounttyName) {
       //     '<li>' + '小孩口罩：' + dataArr[i].properties.mask_child + ' 個' + '</li>' +
       //   '</ul>' + 
       // '</li>';
-      
+
       // ES 6 組字串
       ` <li>${dataArr[i].properties.county}
           <ul>
@@ -227,7 +227,6 @@ function renderAreaSelect() {
   for (var item of jsonDate.features){
     if (item.properties.county == '') {
       newCountyArr.push('其他');
-      newOption;
       newOption.textContent = '其他';
       areaEL.appendChild(newOption);
     };
