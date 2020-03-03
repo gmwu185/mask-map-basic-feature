@@ -157,9 +157,11 @@ function renderList(CounttyName) {
   console.log('dataArr', dataArr);
   var dataStr = '';
   for (var i=0; i<dataArr.length; i++){
-    // 字串模版
+    
+    
+    /*----------  字串模版  ----------*/
     var strTemplate = 
-      /*----------  ES 5 組字串  ----------*/
+      // ES 5 組字串
       // '<li>' + dataArr[i].properties.name + 
       //   '<ul>' + 
       //     '<li>' + '地址：' + dataArr[i].properties.address + '</li>' +
@@ -167,7 +169,8 @@ function renderList(CounttyName) {
       //     '<li>' + '小孩口罩：' + dataArr[i].properties.mask_child + ' 個' + '</li>' +
       //   '</ul>' + 
       // '</li>';
-      /*----------  ES 6 組字串  ----------*/
+      
+      // ES 6 組字串
       ` <li>${dataArr[i].properties.county}
           <ul>
             <li>${dataArr[i].properties.name}</li>
@@ -177,10 +180,25 @@ function renderList(CounttyName) {
           </ul>
         </li>
       `;
+      
+    /*----------  選地名判斷  ----------*/
+    // 比對點按縣市名，過濾出不為 '' 完整縣市名
     if(CounttyName == dataArr[i].properties.county){ 
-      dataStr += strTemplate;
-    } else if (CounttyName == '全部') {
-      dataStr += strTemplate;
+      if (CounttyName !== ''){
+        dataStr += strTemplate;
+      }
+    } 
+    // 選到 '全部' 後，過濾出不為 '' 完整縣市名
+    if (CounttyName == '全部') {
+      if (CounttyName !== ''){
+        dataStr += strTemplate;
+      }
+    }
+    // 選到 '其他' 後，'' 為沒有完整縣市名
+    if (CounttyName == '其他') {
+      if ( '' == dataArr[i].properties.county) {
+        dataStr += strTemplate;
+      }
     }
   };
   document.querySelector('.js-list').innerHTML = dataStr;
@@ -195,12 +213,24 @@ var areaEL = document.querySelector('.js-area');
 function renderAreaSelect() {
   var newCountyArr = [];
   for (var item of jsonDate.features){
-    if(newCountyArr.indexOf(item.properties.county) == -1) {
-      newCountyArr.push(item.properties.county);
-      var newOption = document.createElement("option");
-      newOption.textContent = item.properties.county;
+    if (item.properties.county !== '') {
+      if(newCountyArr.indexOf(item.properties.county) == -1) {
+      
+        var newOption = document.createElement("option");
+        newCountyArr.push(item.properties.county);
+        newOption.textContent = item.properties.county;
+        areaEL.appendChild(newOption);
+      };
+    };
+  };
+  // 專取用縣市或地址資料有缺類別為其他放在最後
+  for (var item of jsonDate.features){
+    if (item.properties.county == '') {
+      newCountyArr.push('其他');
+      newOption;
+      newOption.textContent = '其他';
       areaEL.appendChild(newOption);
-    }
+    };
   }
 }
 
