@@ -149,10 +149,10 @@ function getData() {
 
 
 /** 資料處理與組字串模版輸出內容到畫面上
- * @param CounttyName 透過 .js-area 切換選單後取得字串轉入比對資料
+ * @param countryName 透過 .js-area 切換選單後取得字串轉入比對資料
  * 
  */
-function renderList(CounttyName) {
+function renderList(countryName) {
   var dataArr = jsonDate.features;
   console.log('dataArr', dataArr);
   var dataStr = '';
@@ -183,19 +183,19 @@ function renderList(CounttyName) {
       
     /*----------  選地名判斷  ----------*/
     // 比對點按縣市名，過濾出不為 '' 完整縣市名
-    if(CounttyName == dataArr[i].properties.county){ 
-      if (CounttyName !== ''){
+    if(countryName == dataArr[i].properties.county){ 
+      if (countryName !== ''){
         dataStr += strTemplate;
       }
     } 
     // 選到 '全部' 後，過濾出不為 '' 完整縣市名
-    if (CounttyName == '全部') {
-      if (CounttyName !== ''){
+    if (countryName == '全部') {
+      if (countryName !== ''){
         dataStr += strTemplate;
       }
     }
     // 選到 '其他' 後，'' 為沒有完整縣市名
-    if (CounttyName == '其他') {
+    if (countryName == '其他') {
       if ( '' == dataArr[i].properties.county) {
         dataStr += strTemplate;
       }
@@ -210,28 +210,34 @@ var areaEL = document.querySelector('.js-area');
 /** 市區選單比對重復名後輸出建立 option 選單
  * 
  */
+
 function renderAreaSelect() {
   var newCountyArr = [];
+  var otherCountyArr = [];
+  // 比對資料，分別存於預先定義陣列資料變數中
   for (var item of jsonDate.features){
     if (item.properties.county !== '') {
       if(newCountyArr.indexOf(item.properties.county) == -1) {
-      
-        var newOption = document.createElement("option");
         newCountyArr.push(item.properties.county);
-        newOption.textContent = item.properties.county;
-        areaEL.appendChild(newOption);
-      };
+      }
+    } else if (item.properties.county == '') {
+      if(otherCountyArr.indexOf('其他') == -1) {
+        otherCountyArr.push('其他');
+      }
     };
   };
-  // 專取用縣市或地址資料有缺類別為其他放在最後
-  for (var item of jsonDate.features){
-    if (item.properties.county == '') {
-      newCountyArr.push('其他');
-      newOption.textContent = '其他';
+
+  // 輸出與創建 DOM 的 Options 結構
+  function createCountyOptions (countyArr){
+    for (var i=0; i<countyArr.length; i++){
+      var newOption = document.createElement("option");
+      newOption.textContent = countyArr[i];
       areaEL.appendChild(newOption);
-    };
+    }
   }
-}
+  createCountyOptions(newCountyArr);
+  createCountyOptions(otherCountyArr);
+};
 
 
 
